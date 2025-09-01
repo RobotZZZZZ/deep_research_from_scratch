@@ -40,10 +40,11 @@ def get_today_str() -> str:
 load_dotenv()
 
 # 初始化gpt模型
-api_url = os.getenv('DEEPSEEK_API_URL')
-api_key = os.getenv('DEEPSEEK_API_KEY')
-model_name = os.getenv('DEEPSEEK_MODEL')
+api_url = os.getenv('KIMI_API_URL')
+api_key = os.getenv('KIMI_API_KEY')
+model_name = os.getenv('KIMI_MODEL')
 model = init_chat_model(
+    model_provider="openai",  # 避免langchain根据模型名自动选择供应商
     model=model_name, 
     temperature=0.0,
     api_key=api_key,
@@ -102,7 +103,7 @@ def write_research_brief(state: AgentState):
     # 更新state，生成研究简报并传递给管理者agent(supervisor)
     return {
         "research_brief": response.research_brief,
-        "supervisor_messages": [HumanMessge(content=f"{response.research_brief}.")]
+        "supervisor_messages": [HumanMessage(content=f"{response.research_brief}.")]
     }
 
 # ==== 构建研究范围界定的工作流（基于langgraph） ====
