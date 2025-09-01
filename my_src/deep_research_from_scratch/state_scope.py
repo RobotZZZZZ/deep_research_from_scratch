@@ -1,4 +1,5 @@
 
+# -*- coding: utf-8 -*-
 """定义state和Pydantic的schema，用于后续的上下文传递。"""
 
 import operator

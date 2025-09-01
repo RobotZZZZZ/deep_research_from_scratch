@@ -1,4 +1,5 @@
 
+# -*- coding: utf-8 -*-
 """
 根据用户需求，生成研究简报。
 
@@ -32,7 +33,8 @@ from deep_research_from_scratch.state_scope import (
 
 def get_today_str() -> str:
     """获取当前日期字符串"""
-    return datetime.now().strftime("%a %b %-d, %Y")
+    # 使用#代替-,避免跨平台问题
+    return datetime.now().strftime("%a %b %#d, %Y")
 
 # ==== 配置 ====
 
@@ -71,7 +73,7 @@ def clarify_with_user(state: AgentState) -> Command[Literal["write_research_brie
         ))
     ])
 
-    # 根据need_clarification，判断后续的流程
+    # 根据need_clarification，判断后续的流程，并更新state
     if response.need_clarification:
         return Command(
             goto=END,

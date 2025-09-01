@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Prompt templates for the deep research system.
 
 This module contains all prompt templates used across the research workflow components,
