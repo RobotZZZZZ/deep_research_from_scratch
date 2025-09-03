@@ -5,7 +5,7 @@ import operator
 from typing_extensions import TypedDict, Annotated, List, Sequence
 from pydantic import BaseModel, Field
 from langchain_core.messages import BaseMessage
-from langchain.graph.message import add_messages
+from langgraph.graph.message import add_messages
 
 # ==== 定义state ====
 
@@ -39,7 +39,7 @@ class ClarifyWithUser(BaseModel):
 
 class ResearchQuestion(BaseModel):
     """用于生成研究简报的schema定义"""
-    research_brief: str: Field(
+    research_brief: str = Field(
         description="A research question that will be used to guide the research."
     )
 

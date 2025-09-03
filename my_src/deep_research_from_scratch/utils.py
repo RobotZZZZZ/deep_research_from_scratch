@@ -1,6 +1,7 @@
 
 """Research工具定义"""
 
+import os
 from pathlib import Path
 from datetime import datetime
 from typing_extensions import Annotated, List, Literal
@@ -37,7 +38,7 @@ model_name = os.getenv('KIMI_MODEL')
 summarization_model = init_chat_model(
     model_provider="openai",  # 避免langchain根据模型名自动选择供应商
     model=model_name, 
-    temperature=0.0,
+    # temperature=0.0,
     api_key=api_key,
     base_url=api_url
 )
@@ -117,11 +118,11 @@ def deduplicate_search_results(search_results: List[dict]) -> dict:
         for result in response["results"]:
             url = result["url"]
             if url not in unique_results:
-                unique_resutls[url] = result
+                unique_results[url] = result
 
-    return unique_resutls
+    return unique_results
 
-def process_search_resutls(unique_results: dict) -> dict:
+def process_search_results(unique_results: dict) -> dict:
     """
     处理搜索结果
 
@@ -130,9 +131,9 @@ def process_search_resutls(unique_results: dict) -> dict:
     Returns:
         dict: 处理后的搜索结果
     """
-    processed_results = []
+    summarized_results = {}
 
-    for url, result in unique_results.values():
+    for url, result in unique_results.items():
         if not result.get("raw_content"):
             content = result["content"]
         else:
