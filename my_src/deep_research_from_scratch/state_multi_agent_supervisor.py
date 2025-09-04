@@ -19,7 +19,7 @@ class SupervisorState(TypedDict):
     # 用于最终报告生成的要点信息
     notes: Annotated[list[str], operator.add] = []
     # 记录迭代次数
-    research_iteration: int = 0
+    research_iterations: int = 0
     # 原始的来自sub-agent的研究要点
     raw_notes: Annotated[list[str], operator.add] = []
 

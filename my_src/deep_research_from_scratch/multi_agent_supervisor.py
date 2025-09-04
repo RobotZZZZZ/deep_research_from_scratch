@@ -56,7 +56,7 @@ supervisor_model = init_chat_model(
     # temperature=0.0,
     api_key=api_key,
     base_url=api_url,
-    max_tokens=64000
+    # max_tokens=64000
 )
 # 绑定工具
 supervisor_model_with_tools = supervisor_model.bind_tools(supervisor_tools)
@@ -103,6 +103,10 @@ async def supervisor_tools(state: SupervisorState) -> Command[Literal["superviso
     next_step = "supervisor"  # 默认下一步是supervisor
     should_end = False
 
+    # 添加调试信息
+    print(f"🔍 当前迭代次数: {research_iterations}, 最大限制: {max_researcher_iterations}")
+    print(f"🔍 最新消息是否有tool_calls: {bool(most_recent_message.tool_calls)}")
+
     # 优先判断是否需要结束
     exceeded_iterations = research_iterations >= max_researcher_iterations
     no_tool_calls = not most_recent_message.tool_calls
@@ -111,10 +115,17 @@ async def supervisor_tools(state: SupervisorState) -> Command[Literal["superviso
         for tool_call in most_recent_message.tool_calls
     )
 
+    print(f"🔍 超过迭代限制: {exceeded_iterations}")
+    print(f"🔍 没有tool_calls: {no_tool_calls}")
+    print(f"🔍 研究完成: {research_complete}")
+
     if exceeded_iterations or no_tool_calls or research_complete:
         should_end = True
         next_step = END
+        print(f"✅ 满足结束条件，准备结束流程")
     else:
+        print(f"➡️ 继续执行，下一步: {next_step}")
+        print(f"🔍 当前消息: {most_recent_message}")
         # 工具执行
         try:
             # 分离tool调用

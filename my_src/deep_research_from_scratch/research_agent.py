@@ -29,7 +29,7 @@ model = init_chat_model(
     # temperature=0.0,
     api_key=api_key,
     base_url=api_url,
-    max_tokens=64000
+    # max_tokens=64000
 )
 # 工具绑定
 model_with_tools = model.bind_tools(tools)
@@ -39,7 +39,7 @@ summarization_model = init_chat_model(
     # temperature=0.0,
     api_key=api_key,
     base_url=api_url,
-    max_tokens=64000
+    # max_tokens=64000
 )
 compress_model = init_chat_model(
     model_provider="openai",  # 避免langchain根据模型名自动选择供应商
@@ -47,7 +47,7 @@ compress_model = init_chat_model(
     # temperature=0.0,
     api_key=api_key,
     base_url=api_url,
-    max_tokens=64000
+    # max_tokens=64000
 )
 
 # ==== agent节点 ====
@@ -93,7 +93,7 @@ def compress_research(state: ResearcherState) -> dict:
 
     system_message = compress_research_system_prompt.format(date=get_today_str())
     used_compress_research_human_message = compress_research_human_message
-    if state.get("research_topic"):
+    if state.get("research_topic", ""):
         used_compress_research_human_message = used_compress_research_human_message.format(
             research_topic=state.get("research_topic")
         )

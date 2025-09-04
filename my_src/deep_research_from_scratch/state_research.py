@@ -13,7 +13,7 @@ class ResearcherState(TypedDict):
     """用于存储上下文信息"""
     researcher_messages: Annotated[Sequence[BaseMessage], add_messages]
     tool_call_iterations: int
-    researcher_topic: str
+    research_topic: str
     compressed_research: str
     raw_notes: Annotated[List[str], operator.add]
 

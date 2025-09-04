@@ -40,7 +40,8 @@ summarization_model = init_chat_model(
     model=model_name, 
     # temperature=0.0,
     api_key=api_key,
-    base_url=api_url
+    base_url=api_url,
+    max_tokens=64000
 )
 # 初始化tavily客户端
 tavily_client = TavilyClient()
