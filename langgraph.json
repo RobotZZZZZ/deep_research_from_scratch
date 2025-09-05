@@ -2,7 +2,10 @@
     "dockerfile_lines": [],
     "graphs": {
       "scope_research": "./my_src/deep_research_from_scratch/research_agent_scope.py:scope_research",
-      "research_agent": "./my_src/deep_research_from_scratch/research_agent.py:researcher_agent"
+      "research_agent": "./my_src/deep_research_from_scratch/research_agent.py:researcher_agent",
+      "research_agent_mcp": "./my_src/deep_research_from_scratch/research_agent_mcp.py:agent_mcp",
+      "research_agent_supervisor": "./my_src/deep_research_from_scratch/multi_agent_supervisor.py:supervisor_agent",
+      "research_agent_full": "./my_src/deep_research_from_scratch/research_agent_full.py:agent"
     },
     "python_version": "3.12",
     "env": ".env",
