@@ -67,28 +67,29 @@ async def knowledge_search(
         vector_similarity_weight: float
     ) -> str:
         try:
-            client = get_ragflow_client()
-            all_datasets = client.list_datasets()
-            dataset_ids = [dataset.id for dataset in all_datasets if dataset.name in dataset_names]
+            client = get_ragflow_client()            
+            # 获取dataset_ids和document_name
+            docid_name = dict()
+            dataset_ids = []
+            for dataset in dataset_names:
+                dataset_instance = client.get_dataset(dataset)
+                for doc in dataset_instance.list_documents():
+                    docid_name[doc.id] = doc.name
+                    dataset_ids.append(doc.id)
+            # 检索
             chunks = client.retrieve(
                 dataset_ids=dataset_ids,
                 page_size=page_size,
                 similarity_threshold=similarity_threshold,
                 vector_similarity_weight=vector_similarity_weight
             )
-            # 获取document_name
-            docid_name = dict()
-            for dataset in dataset_names:
-                dataset_instance = client.get_dataset(dataset)
-                for doc in dataset_instance.list_documents():
-                    docid_name[doc.id] = doc.name
-            # 获取检索结果
+            # 格式化检索结果
             results = []
             for chunk in chunks:
                 result = RetrievalResult(
                     query=query,
                     document_name=getattr(chunk, 'document_name', 'Unknown'),
-                    document_id=docid_name[getattr(chunk, 'document_id', '')],
+                    document_id=docid_name.get(getattr(chunk, 'document_id', ''), 'Unknown'),
                     content=getattr(chunk, 'content', ''),
                     similarity=float(getattr(chunk, 'similarity', 0.0) or 0.0),
                     dataset_id=getattr(chunk, 'dataset_id', ''),
