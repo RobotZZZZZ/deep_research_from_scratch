@@ -22,6 +22,7 @@ from deep_research_from_scratch.utils import (
     get_today_str, 
     think_tool
 )
+from .ragflow_tool import knowledge_search
 from deep_research_from_scratch.my_prompts import (
     research_agent_prompt,
     compress_research_system_prompt,
@@ -65,7 +66,7 @@ async def llm_call(state: ResearcherState):
     mcp_tools = await client.get_tools()
 
     # 工具设置
-    tools = mcp_tools + [tavily_search, think_tool]
+    tools = mcp_tools + [knowledge_search, tavily_search, think_tool]
 
     # 工具绑定
     model_with_tools = model.bind_tools(tools)
@@ -98,7 +99,7 @@ async def tool_node(state: ResearcherState):
             """执行单个工具"""
             tool = tools_by_name[tool_call["name"]]
             if tool_call["name"] == "think_tool":
-                # think_tool采用同步执行，但包装成异步，避免阻塞主线程
+                # think_tool采用同步执行，但包装成异步，避免阻塞主线程(使用其它线程运行，会导致langsmith的追踪有问题)
                 # loop = asyncio.get_event_loop()
                 # observation = await loop.run_in_executor(None, tool.invoke, tool_call["args"])
                 observation = tool.invoke(tool_call["args"])

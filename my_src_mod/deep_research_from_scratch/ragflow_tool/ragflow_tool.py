@@ -1,12 +1,13 @@
 import os
 import asyncio
 import traceback
-from typing import Annotated, List, Optional
+
+from typing import List
 from dataclasses import dataclass
 
 from ragflow_sdk import RAGFlow
+from langchain_core.tools import tool
 
-from langchain_core.tools import InjectedToolArg, tool
 
 @dataclass
 class RetrievalResult:
@@ -90,6 +91,7 @@ async def knowledge_search(
             results.sort(key=lambda x: x.similarity, reverse=True)
             return query, results, None
         except Exception as e:
+            traceback.print_exc()
             return query, [], str(e)
     
     coros = [
