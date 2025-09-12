@@ -43,7 +43,12 @@ mcp_config = {
             "@modelcontextprotocol/server-filesystem",
             str(get_current_dir() / "files")  # 使用当前目录下的files文件夹
         ],
-        "transport": "stdio"  # 使用stdio传输
+        "transport": "stdio",  # 使用stdio传输
+        "env": {
+            "LANG": "zh_CN.UTF-8",
+            "LC_ALL": "zh_CN.UTF-8",
+            "LC_CTYPE": "zh_CN.UTF-8"
+        }
     }
 }
 

@@ -91,7 +91,7 @@ async def tool_node(state: ResearcherState):
         # 获取最新的工具信息
         client = get_mcp_client()
         mcp_tools = await client.get_tools()
-        tools = mcp_tools + [tavily_search, think_tool]
+        tools = mcp_tools + [knowledge_search, tavily_search, think_tool]
         tools_by_name = {tool.name: tool for tool in tools}
 
         # 异步执行工具

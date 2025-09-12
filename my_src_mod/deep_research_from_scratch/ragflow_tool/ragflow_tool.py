@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+"""知识搜索工具"""
+
 import os
 import asyncio
 import traceback
@@ -34,6 +38,7 @@ class RetrievalResult:
 
 _client = None
 def get_ragflow_client():
+    global _client
     if _client is None:
         _client = RAGFlow(
             api_key=os.getenv("RAGFLOW_API_KEY"), 
@@ -63,8 +68,10 @@ async def knowledge_search(
     ) -> str:
         try:
             client = get_ragflow_client()
+            all_datasets = client.list_datasets()
+            dataset_ids = [dataset.id for dataset in all_datasets if dataset.name in dataset_names]
             chunks = client.retrieve(
-                dataset_names=dataset_names,
+                dataset_ids=dataset_ids,
                 page_size=page_size,
                 similarity_threshold=similarity_threshold,
                 vector_similarity_weight=vector_similarity_weight
